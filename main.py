@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QFrame, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel
+from PyQt5.QtWidgets import QApplication, QFrame, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel, QScrollBar, QSlider
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -12,6 +12,14 @@ class MainWindow(QWidget):
 
         self.layout.addWidget(self.textArea)
         self.textArea.setStyleSheet("QTextEdit {color:white;background-color:#212121;border-radius:16px;}")
+
+        self.scrollbar = QSlider()#QScrollBar()
+        self.scrollbar.setGeometry(400,10,20,20)
+        self.scrollbar.setStyleSheet("color:red;background-color:orange;max-width:16px;")
+
+        #self.textArea.setVerticalScrollBar(self.scrollbar)
+
+        self.layout.addWidget(self.scrollbar)
         
         self.sans = QFont("Segoe UI",15)
         self.textArea.setFont(self.sans)
