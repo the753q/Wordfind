@@ -11,15 +11,15 @@ class MainWindow(QWidget):
         self.textArea = QTextEdit("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.")
 
         self.layout.addWidget(self.textArea)
-        self.textArea.setStyleSheet("QTextEdit {color:white;background-color:#212121;border-radius:16px;}")
+        self.textArea.setStyleSheet("QScrollBar {color:green;background-color:white;}" + "QTextEdit {color:white;background-color:#212121;border-radius:16px;}")
 
-        self.scrollbar = QSlider()#QScrollBar()
-        self.scrollbar.setGeometry(400,10,20,20)
-        self.scrollbar.setStyleSheet("color:red;background-color:orange;max-width:16px;")
+        #self.scrollbar = QSlider()#QScrollBar()
+        #self.scrollbar.setGeometry(400,10,20,20)
+        #self.scrollbar.setStyleSheet("color:red;background-color:orange;max-width:16px;")
 
         #self.textArea.setVerticalScrollBar(self.scrollbar)
 
-        self.layout.addWidget(self.scrollbar)
+        #self.layout.addWidget(self.scrollbar)
         
         self.sans = QFont("Segoe UI",15)
         self.textArea.setFont(self.sans)
