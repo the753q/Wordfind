@@ -31,9 +31,15 @@ class MainWindow(QWidget):
         self.textArea.setFont(self.sans)
         
         self.btnLayout = QVBoxLayout()
-        self.btnLayout.addWidget(QPushButton("Open"))
-        self.btnLayout.addWidget(QPushButton("Setup"))
-        self.btnLayout.addWidget(QPushButton("Find"))
+        self.openBtn = QPushButton("Open")
+        self.setupBtn = QPushButton("Setup")
+        self.findBtn = QPushButton("Find")
+        self.btnLayout.addWidget(self.openBtn)
+        self.btnLayout.addWidget(self.setupBtn)
+        self.btnLayout.addWidget(self.findBtn)
+
+        self.setupBtn.clicked.connect(self.WordOptionsShow)
+
         self.setStyleSheet(
             "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
             "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + 
@@ -75,6 +81,24 @@ class MainWindow(QWidget):
         self.btnLayout.setContentsMargins(self.widgetMargin,0,0,0)
         self.setContentsMargins(self.widgetMargin,self.widgetMargin,self.widgetMargin,self.widgetMargin)
         self.setWindowTitle("Wordfind")
+
+    def WordOptionsShow(self):
+        self.WordOptions = WordOptions()
+        self.WordOptions.show()
+
+
+class WordOptions(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        self.layout.addWidget(self.label)
+        self.setLayout(self.layout)
+
+        self.setGeometry(150, 150, 595, 285)
+        self.setWindowTitle("Wordfind - Setup Word Finding")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
