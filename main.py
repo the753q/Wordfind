@@ -8,12 +8,24 @@ class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.layout = QHBoxLayout()
-        self.textArea = QTextEdit("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pretium dui ut ultricies fermentum. Cras quis eleifend metus, a blandit ex. Integer id rutrum arcu. In laoreet cursus est. Phasellus ornare massa id lectus consequat, vel tincidunt enim aliquam. Nunc aliquet commodo hendrerit. Nullam posuere, justo id tincidunt aliquam, dolor ante bibendum nunc, vel ultricies urna turpis id nisi. Nullam bibendum eros ut nibh varius, a convallis erat accumsan. Etiam pretium vehicula arcu, mattis fringilla tortor efficitur nec. Morbi eget vulputate diam, in posuere dolor. Cras interdum facilisis luctus. Fusce volutpat sapien eget consequat tristique. In nec arcu velit.")
-
-        self.barCSS = ("QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + "QScrollBar::handle:hover {background-color:#bdbdbd;}" + "QScrollBar::handle:pressed {background-color:white;}" + "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + "QScrollBar::sub-line {height:0;}" + "QScrollBar::add-line {height:0;}" + "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + "QWidget {background-color:rgba(0,0,0,0);}")
+        self.textArea = QTextEdit(str(8999999999**899))
+        self.barCSS = (
+            "QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + 
+            "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
+            "QScrollBar::handle:pressed {background-color:white;}" + 
+            "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + 
+            "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + 
+            "QScrollBar::sub-line {height:0;}" + 
+            "QScrollBar::add-line {height:0;}" + 
+            "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
+            "QWidget {background-color:rgba(0,0,0,0);}"
+        )
 
         self.layout.addWidget(self.textArea)
-        self.textArea.setStyleSheet(self.barCSS + "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}")
+        self.textArea.setStyleSheet(
+        self.barCSS + 
+        "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
+        )
         
         self.sans = QFont("Segoe UI",69)
         self.textArea.setFont(self.sans)
