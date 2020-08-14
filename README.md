@@ -1,5 +1,5 @@
 # Wordfind
-**A tool to find words for crossword puzzle from a text document.**\
+**A tool to find words for a crossword puzzle from a text document.**\
 \
 early screenshot
 \
