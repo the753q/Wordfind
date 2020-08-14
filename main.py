@@ -23,8 +23,8 @@ class MainWindow(QWidget):
 
         self.layout.addWidget(self.textArea)
         self.textArea.setStyleSheet(
-        self.barCSS + 
-        "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
+            self.barCSS + 
+            "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         
         self.sans = QFont("Segoe UI",69)
@@ -34,12 +34,19 @@ class MainWindow(QWidget):
         self.btnLayout.addWidget(QPushButton("Open"))
         self.btnLayout.addWidget(QPushButton("Setup"))
         self.btnLayout.addWidget(QPushButton("Find"))
-        self.setStyleSheet("QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}")
+        self.setStyleSheet(
+            "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
+            "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + 
+            "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
+        )
         
         self.status = QTextEdit()
         self.status.insertPlainText("Successfully loaded" + "\nOpen a file...")
         self.status.setReadOnly(1)
-        self.status.setStyleSheet(self.barCSS + "QTextEdit {color:#bdbdbd;background-color:#212121;padding:2px;border-radius:16px;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}")
+        self.status.setStyleSheet(
+            self.barCSS + 
+            "QTextEdit {color:#bdbdbd;background-color:#212121;padding:2px;border-radius:16px;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
+        )
 
         self.controlLayout = QVBoxLayout()
         self.controlLayout.addWidget(self.status)
