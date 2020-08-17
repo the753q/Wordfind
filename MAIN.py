@@ -1,5 +1,5 @@
 import sys
-import WordSetupWindow
+import Wordfinding
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument
 from PyQt5.QtCore import Qt, QPoint, QObject
@@ -85,11 +85,11 @@ class MainWindow(QWidget):
         self.setWindowTitle("Wordfind")
 
     def WordOptionsShow(self):
-        self.WordOptions = WordSetupWindow.WordOptions()
+        self.WordOptions = Wordfinding.WordOptions()
         self.WordOptions.show()
 
     def handleFind(self):
-        text = str("yes") #self.dock.findLine.text()
+        text = str("yes")
         if not text:
             return
         fmt = QTextCharFormat()
@@ -99,7 +99,7 @@ class MainWindow(QWidget):
 
         self.textArea.moveCursor(QTextCursor.Start)
 
-        while self.textArea.find(text, QTextDocument.FindWholeWords):      # Find whole words
+        while self.textArea.find(text, QTextDocument.FindWholeWords):
             self.mergeFormatOnWordOrSelection(fmt)
 
     def mergeFormatOnWordOrSelection(self, format):
