@@ -89,26 +89,25 @@ class MainWindow(QWidget):
         self.WordOptions.show()
 
     def handleFind(self):
-        text = str("8") #self.dock.findLine.text()
+        text = str("yes") #self.dock.findLine.text()
         if not text:
             return
         fmt = QTextCharFormat()
         fmt.setForeground(Qt.red)
-        print("\nfmt.setForeground(col)", Qt.red)
+        print("\nfmt.setForeground(Qt.red)", Qt.red)
         fmt.setFontPointSize(14)     
 
         self.textArea.moveCursor(QTextCursor.Start)
 
         while self.textArea.find(text, QTextDocument.FindWholeWords):      # Find whole words
             self.mergeFormatOnWordOrSelection(fmt)
-            self.countWords += 1
 
     def mergeFormatOnWordOrSelection(self, format):
-        cursor = self.textEdit.textCursor()
+        cursor = self.textArea.textCursor()
         if not cursor.hasSelection():
             cursor.select(QTextCursor.WordUnderCursor)
         cursor.mergeCharFormat(format)
-        self.textEdit.mergeCurrentCharFormat(format)
+        self.textArea.mergeCurrentCharFormat(format)
 
 
 if __name__ == "__main__":
