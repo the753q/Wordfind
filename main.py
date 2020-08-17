@@ -1,4 +1,5 @@
 import sys
+import wordSetupWindow
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QPoint
