@@ -40,6 +40,7 @@ class MainWindow(QWidget):
         self.btnLayout.addWidget(self.findBtn)
 
         self.setupBtn.clicked.connect(self.WordOptionsShow)
+        self.findBtn.clicked.connect(self.handleFind())
 
         self.setStyleSheet(
             "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
@@ -86,6 +87,30 @@ class MainWindow(QWidget):
     def WordOptionsShow(self):
         self.WordOptions = WordSetupWindow.WordOptions()
         self.WordOptions.show()
+
+    def handleFind(self):
+        text = self.dock.findLine.text()
+        if not text:
+            return
+        col = QColorDialog.getColor(self.textEdit.textColor(), self)
+        if not col.isValid():
+            return
+        fmt = QTextCharFormat()
+        fmt.setForeground(col)
+        print("\nfmt.setForeground(col)", col)
+        fmt.setFontPointSize(14)     
+
+        self.textEdit.moveCursor(QTextCursor.Start)
+
+        self.countWords = 0
+        while self.textEdit.find(text, QTextDocument.FindWholeWords):      # Find whole words
+            self.mergeFormatOnWordOrSelection(fmt)
+            self.countWords += 1
+
+        QMessageBox.information(self, 
+            "Information", 
+             "word->`{text}` found in the text `{countWords}` times.".format(text=text, countWords=self.countWords)
+        )
 
 
 if __name__ == "__main__":
