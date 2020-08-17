@@ -1,5 +1,5 @@
 import sys
-import wordSetupWindow
+import WordSetupWindow
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, QPoint
@@ -84,21 +84,8 @@ class MainWindow(QWidget):
         self.setWindowTitle("Wordfind")
 
     def WordOptionsShow(self):
-        self.WordOptions = WordOptions()
+        self.WordOptions = WordSetupWindow.WordOptions()
         self.WordOptions.show()
-
-
-class WordOptions(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.layout = QVBoxLayout()
-        self.label = QLabel("Another Window")
-        self.layout.addWidget(self.label)
-        self.setLayout(self.layout)
-
-        self.setGeometry(150, 150, 595, 285)
-        self.setWindowTitle("Wordfind - Setup Word Finding")
-        self.setWindowModality(QtCore.Qt.ApplicationModal)
 
 
 if __name__ == "__main__":
