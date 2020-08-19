@@ -9,7 +9,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.layout = QHBoxLayout()
-        self.textArea = QTextEdit(str(8999999999**850))
+        self.textArea = QTextEdit(str(99**9**3))
         self.barCSS = (
             "QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + 
             "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
@@ -113,7 +113,10 @@ class MainWindow(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon("icon.png"))
-    app.setStyleSheet("QWidget {background-color:#424242;}" + "QTextEdit {border: 3px solid #181818;}")
+    app.setStyleSheet(
+        "QWidget {background-color:#424242;}" +
+        "QTextEdit {border: 3px solid #181818;}"
+    )
     app.setFont(QFont("Trebuchet MS"))
     mw = MainWindow()
     mw.show()
