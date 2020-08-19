@@ -1,5 +1,4 @@
 import sys
-import Wordfinding
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument
 from PyQt5.QtCore import Qt, QPoint, QObject
@@ -9,14 +8,14 @@ class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.layout = QHBoxLayout()
-        self.textArea = QTextEdit(str(99**9**3))
+        self.textArea = QTextEdit(str(99**9**3) + " yes")
         self.barCSS = (
             "QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + 
             "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
             "QScrollBar::handle:pressed {background-color:white;}" + 
             "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + 
             "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + 
-            "QScrollBar::sub-line {height:0;}" + 
+            "QScrollBar::sub-line {height:0;}" +
             "QScrollBar::add-line {height:0;}" + 
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}"
@@ -85,11 +84,11 @@ class MainWindow(QWidget):
         self.setWindowTitle("Wordfind")
 
     def WordOptionsShow(self):
-        self.WordOptions = Wordfinding.WordOptions()
-        self.WordOptions.show()
+        self.WSetup = WordOptions()
+        self.WSetup.show()
 
     def handleFind(self):
-        text = str("yes")
+        #text = Wordfinding.WordOptions()
         if not text:
             return
         fmt = QTextCharFormat()
@@ -108,6 +107,30 @@ class MainWindow(QWidget):
             cursor.select(QTextCursor.WordUnderCursor)
         cursor.mergeCharFormat(format)
         self.textArea.mergeCurrentCharFormat(format)
+
+
+class WordOptions(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        self.layout.addWidget(self.label)
+    
+        #self.setGeometry(150, 150, 595, 285)
+        self.setFixedSize(595,285)
+        self.setWindowTitle("Wordfind - Setup Word Finding")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+
+        self.confirmBtn = QPushButton("Confirm")
+        self.confirmBtn.clicked.connect(self.confirmWord)
+        self.layout.addWidget(self.confirmBtn)
+
+        self.setLayout(self.layout)
+
+    def confirmWord(self):
+        text = str("yes")
+        print("Word to find confirmed")
+        self.close()
 
 
 if __name__ == "__main__":
