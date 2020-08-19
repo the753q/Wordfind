@@ -88,6 +88,8 @@ class MainWindow(QWidget):
         self.WSetup.show()
 
     def handleFind(self):
+        self.text = WordOptions().grabWord()
+        print("Grabbed word: " + self.text)
         #text = Wordfinding.WordOptions()
         if not text:
             return
@@ -128,9 +130,12 @@ class WordOptions(QWidget):
         self.setLayout(self.layout)
 
     def confirmWord(self):
-        text = str("yes")
-        print("Word to find confirmed")
+        self.word = "yes"
+        print("Word to find confirmed" + ": " + self.word)
         self.close()
+
+    def grabWord(self):
+        return(self.word)
 
 
 if __name__ == "__main__":
