@@ -16,7 +16,7 @@ class MainWindow(QWidget):
             "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + 
             "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + 
             "QScrollBar::sub-line {height:0;}" +
-            "QScrollBar::add-line {height:0;}" + 
+            "QScrollBar::add-line {height:0;}" +
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}"
         )
@@ -48,7 +48,7 @@ class MainWindow(QWidget):
         )
         
         self.status = QTextEdit()
-        self.status.insertPlainText("Successfully loaded" + "\nOpen a file...")
+        self.status.insertPlainText("Successfully loaded." + "\nOpen a file...")
         self.status.setReadOnly(1)
         self.status.setStyleSheet(
             self.barCSS + 
@@ -102,7 +102,7 @@ class MainWindow(QWidget):
         self.WSetup.show()
 
     def handleFind(self):
-        print("Grabbed word: " + word)
+        self.updateStatusText("\nGrabbed word: " + word + ".")
         #text = Wordfinding.WordOptions()
         if not word:
             return
@@ -122,6 +122,11 @@ class MainWindow(QWidget):
             cursor.select(QTextCursor.WordUnderCursor)
         cursor.mergeCharFormat(format)
         self.textArea.mergeCurrentCharFormat(format)
+
+    def updateStatusText(self, message):
+        self.status.insertPlainText(message)
+        self.status.setValue(2)#self.status.QScrollBar().maximum())
+        print("Scroll value: " + self.status.QScrollBar.maximum())
 
 
 class WordOptions(QWidget):
