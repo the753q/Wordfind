@@ -88,10 +88,9 @@ class MainWindow(QWidget):
         self.WSetup.show()
 
     def handleFind(self):
-        self.text = WordOptions().grabWord()
-        print("Grabbed word: " + self.text)
+        print("Grabbed word: " + word)
         #text = Wordfinding.WordOptions()
-        if not text:
+        if not word:
             return
         fmt = QTextCharFormat()
         fmt.setForeground(Qt.red)
@@ -100,7 +99,7 @@ class MainWindow(QWidget):
 
         self.textArea.moveCursor(QTextCursor.Start)
 
-        while self.textArea.find(text, QTextDocument.FindWholeWords):
+        while self.textArea.find(word, QTextDocument.FindWholeWords):
             self.mergeFormatOnWordOrSelection(fmt)
 
     def mergeFormatOnWordOrSelection(self, format):
@@ -130,12 +129,10 @@ class WordOptions(QWidget):
         self.setLayout(self.layout)
 
     def confirmWord(self):
-        self.word = "yes"
-        print("Word to find confirmed" + ": " + self.word)
+        global word
+        word = "yes"
+        print("Word to find confirmed" + ": " + word)
         self.close()
-
-    def grabWord(self):
-        return(self.word)
 
 
 if __name__ == "__main__":
