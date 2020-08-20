@@ -2,7 +2,7 @@ import sys
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument
 from PyQt5.QtCore import Qt, QPoint, QObject
-from PyQt5.QtWidgets import QApplication, QFrame, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel
+from PyQt5.QtWidgets import QApplication, QFrame, QDesktopWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -77,11 +77,25 @@ class MainWindow(QWidget):
         self.mainLayout.addLayout(self.layout)
 
         self.setLayout(self.mainLayout)
-        self.setGeometry(100, 100, 695, 385)
+        self.resize(695, 385)
+        self.center()
         self.widgetMargin = 6
         self.btnLayout.setContentsMargins(self.widgetMargin,0,0,0)
         self.setContentsMargins(self.widgetMargin,self.widgetMargin,self.widgetMargin,self.widgetMargin)
         self.setWindowTitle("Wordfind")
+
+    def center(self): #thx https://github.com/saleph
+        # geometry of the main window
+        qr = self.frameGeometry()
+
+        # center point of screen
+        cp = QDesktopWidget().availableGeometry().center()
+
+        # move rectangle's center point to screen's center point
+        qr.moveCenter(cp)
+
+        # top left of rectangle becomes top left of window centering it
+        self.move(qr.topLeft())
 
     def WordOptionsShow(self):
         self.WSetup = WordOptions()
