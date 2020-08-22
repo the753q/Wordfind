@@ -1,23 +1,26 @@
 import sys
-import WordSetupWindow
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QApplication, QFrame, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel
+from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument, QCursor
+from PyQt5.QtCore import Qt, QPoint, QObject
+from PyQt5.QtWidgets import (
+    QApplication, QFrame, QDesktopWidget, QWidget,
+    QPushButton, QHBoxLayout, QVBoxLayout,
+    QTextEdit, QLabel
+)
 
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.layout = QHBoxLayout()
-        self.textArea = QTextEdit(str(8999999999**850))
+        self.textArea = QTextEdit(str(99**9**3) + " yes")
         self.barCSS = (
             "QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + 
             "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
             "QScrollBar::handle:pressed {background-color:white;}" + 
             "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + 
             "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + 
-            "QScrollBar::sub-line {height:0;}" + 
-            "QScrollBar::add-line {height:0;}" + 
+            "QScrollBar::sub-line {height:0;}" +
+            "QScrollBar::add-line {height:0;}" +
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}"
         )
@@ -40,6 +43,7 @@ class MainWindow(QWidget):
         self.btnLayout.addWidget(self.findBtn)
 
         self.setupBtn.clicked.connect(self.WordOptionsShow)
+        self.findBtn.clicked.connect(self.handleFind)
 
         self.setStyleSheet(
             "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
@@ -48,12 +52,14 @@ class MainWindow(QWidget):
         )
         
         self.status = QTextEdit()
-        self.status.insertPlainText("Successfully loaded" + "\nOpen a file...")
+        self.status.insertPlainText("Successfully loaded." + "\nOpen a file...")
         self.status.setReadOnly(1)
+        self.status.setTextInteractionFlags(Qt.NoTextInteraction)
         self.status.setStyleSheet(
-            self.barCSS + 
+            self.barCSS +
             "QTextEdit {color:#bdbdbd;background-color:#212121;padding:2px;border-radius:16px;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
         )
+        self.status.setCursor(Qt.WaitCursor)
 
         self.controlLayout = QVBoxLayout()
         self.controlLayout.addWidget(self.status)
@@ -77,21 +83,89 @@ class MainWindow(QWidget):
         self.mainLayout.addLayout(self.layout)
 
         self.setLayout(self.mainLayout)
-        self.setGeometry(100, 100, 695, 385)
+        self.resize(695, 385)
+        self.center()
         self.widgetMargin = 6
         self.btnLayout.setContentsMargins(self.widgetMargin,0,0,0)
         self.setContentsMargins(self.widgetMargin,self.widgetMargin,self.widgetMargin,self.widgetMargin)
         self.setWindowTitle("Wordfind")
 
+    def center(self): #thx https://github.com/saleph
+        # geometry of the main window
+        qr = self.frameGeometry()
+
+        # center point of screen
+        cp = QDesktopWidget().availableGeometry().center()
+
+        # move rectangle's center point to screen's center point
+        qr.moveCenter(cp)
+
+        # top left of rectangle becomes top left of window centering it
+        self.move(qr.topLeft())
+
     def WordOptionsShow(self):
-        self.WordOptions = WordSetupWindow.WordOptions()
-        self.WordOptions.show()
+        self.WSetup = WordOptions()
+        self.WSetup.show()
+
+    def handleFind(self):
+        self.updateStatusText("\nGrabbed word: " + word + ".")
+        #text = Wordfinding.WordOptions()
+        if not word:
+            return
+        fmt = QTextCharFormat()
+        fmt.setForeground(Qt.red)
+        print("\nfmt.setForeground(Qt.red)", Qt.red)
+        fmt.setFontPointSize(14)     
+
+        self.textArea.moveCursor(QTextCursor.Start)
+
+        while self.textArea.find(word, QTextDocument.FindWholeWords):
+            self.mergeFormatOnWordOrSelection(fmt)
+
+    def mergeFormatOnWordOrSelection(self, format):
+        cursor = self.textArea.textCursor()
+        if not cursor.hasSelection():
+            cursor.select(QTextCursor.WordUnderCursor)
+        cursor.mergeCharFormat(format)
+        self.textArea.mergeCurrentCharFormat(format)
+
+    def updateStatusText(self, message):
+        self.status.insertPlainText(message)
+        self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
+
+
+class WordOptions(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        self.layout.addWidget(self.label)
+    
+        #self.setGeometry(150, 150, 595, 285)
+        self.setFixedSize(595,285)
+        self.setWindowTitle("Wordfind - Setup Word Finding")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+
+        self.confirmBtn = QPushButton("Confirm")
+        self.confirmBtn.clicked.connect(self.confirmWord)
+        self.layout.addWidget(self.confirmBtn)
+
+        self.setLayout(self.layout)
+
+    def confirmWord(self):
+        global word
+        word = "yes"
+        print("Word to find confirmed" + ": " + word)
+        self.close()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon("icon.png"))
-    app.setStyleSheet("QWidget {background-color:#424242;}" + "QTextEdit {border: 3px solid #181818;}")
+    app.setStyleSheet(
+        "QWidget {background-color:#424242;}" +
+        "QTextEdit {border: 3px solid #181818;}"
+    )
     app.setFont(QFont("Trebuchet MS"))
     mw = MainWindow()
     mw.show()
