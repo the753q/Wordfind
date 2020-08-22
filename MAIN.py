@@ -23,7 +23,7 @@ class MainWindow(QWidget):
             "QScrollBar::add-line {height:0;}" +
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:red;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}" +
-            "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
+            "QTextEdit {color:#999;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         self.btnStyle = (
             "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
