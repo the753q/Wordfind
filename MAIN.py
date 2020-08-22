@@ -13,7 +13,7 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__()
         self.layout = QHBoxLayout()
         self.textArea = QTextEdit(str(99**9**3) + " yes")
-        self.barCSS = (
+        self.textFieldCSS = (
             "QScrollBar::handle {border-radius:4px;background-color:#616161;width:8px;}" + 
             "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
             "QScrollBar::handle:pressed {background-color:white;}" + 
@@ -22,14 +22,16 @@ class MainWindow(QWidget):
             "QScrollBar::sub-line {height:0;}" +
             "QScrollBar::add-line {height:0;}" +
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
-            "QWidget {background-color:rgba(0,0,0,0);}"
+            "QWidget {background-color:rgba(0,0,0,0);}" +
+            "QTextEdit {color:#e0e0e0;background-color:red;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
-
+        self.btnStyle = (
+            "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
+            "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + 
+            "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
+        )
         self.layout.addWidget(self.textArea)
-        self.textArea.setStyleSheet(
-            self.barCSS + 
-            "QTextEdit {color:#e0e0e0;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
-        )
+        self.textArea.setStyleSheet(self.textFieldCSS)
         
         self.sans = QFont("Segoe UI",69)
         self.textArea.setFont(self.sans)
@@ -38,28 +40,24 @@ class MainWindow(QWidget):
         self.openBtn = QPushButton("Open")
         self.setupBtn = QPushButton("Setup")
         self.findBtn = QPushButton("Find")
+        self.findBtn.setEnabled(0)
+
         self.btnLayout.addWidget(self.openBtn)
         self.btnLayout.addWidget(self.setupBtn)
         self.btnLayout.addWidget(self.findBtn)
 
         self.setupBtn.clicked.connect(self.WordOptionsShow)
         self.findBtn.clicked.connect(self.handleFind)
-
-        self.setStyleSheet(
-            "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
-            "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + 
-            "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
-        )
         
         self.status = QTextEdit()
         self.status.insertPlainText("Successfully loaded." + "\nOpen a file...")
         self.status.setReadOnly(1)
         self.status.setTextInteractionFlags(Qt.NoTextInteraction)
         self.status.setStyleSheet(
-            self.barCSS +
-            "QTextEdit {color:#bdbdbd;background-color:#212121;padding:2px;border-radius:16px;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
+            self.textFieldCSS +
+            "QTextEdit {color:#bdbdbd;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
         )
-        self.status.setCursor(Qt.WaitCursor)
+        self.status.viewport().setCursor(Qt.ArrowCursor)
 
         self.controlLayout = QVBoxLayout()
         self.controlLayout.addWidget(self.status)
@@ -82,6 +80,7 @@ class MainWindow(QWidget):
         self.mainLayout = QVBoxLayout()
         self.mainLayout.addLayout(self.layout)
 
+        self.setStyleSheet(self.btnStyle)
         self.setLayout(self.mainLayout)
         self.resize(695, 385)
         self.center()
