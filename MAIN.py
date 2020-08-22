@@ -1,8 +1,12 @@
 import sys
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument
+from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument, QCursor
 from PyQt5.QtCore import Qt, QPoint, QObject
-from PyQt5.QtWidgets import QApplication, QFrame, QDesktopWidget, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit, QLabel
+from PyQt5.QtWidgets import (
+    QApplication, QFrame, QDesktopWidget, QWidget,
+    QPushButton, QHBoxLayout, QVBoxLayout,
+    QTextEdit, QLabel
+)
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -50,10 +54,12 @@ class MainWindow(QWidget):
         self.status = QTextEdit()
         self.status.insertPlainText("Successfully loaded." + "\nOpen a file...")
         self.status.setReadOnly(1)
+        self.status.setTextInteractionFlags(Qt.NoTextInteraction)
         self.status.setStyleSheet(
-            self.barCSS + 
+            self.barCSS +
             "QTextEdit {color:#bdbdbd;background-color:#212121;padding:2px;border-radius:16px;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
         )
+        self.status.setCursor(Qt.WaitCursor)
 
         self.controlLayout = QVBoxLayout()
         self.controlLayout.addWidget(self.status)
@@ -125,8 +131,7 @@ class MainWindow(QWidget):
 
     def updateStatusText(self, message):
         self.status.insertPlainText(message)
-        self.status.setValue(2)#self.status.QScrollBar().maximum())
-        print("Scroll value: " + self.status.QScrollBar.maximum())
+        self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
 
 
 class WordOptions(QWidget):
