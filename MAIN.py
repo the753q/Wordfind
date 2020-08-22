@@ -24,6 +24,7 @@ class MainWindow(QWidget):
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:blue;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}" +
             "QTextEdit {color:#e0e0e0;background-color:red;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
+            "QTextEdit {color:#e0e0e0;background-color:#424242;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         self.btnStyle = (
             "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
@@ -147,6 +148,7 @@ class WordOptions(QWidget):
 
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirmWord)
+        self.confirmBtn.setStyleSheet(self.btnStyle)
         self.layout.addWidget(self.confirmBtn)
 
         self.setLayout(self.layout)
