@@ -113,8 +113,8 @@ class MainWindow(QWidget):
         self.WSetup.show()
         print("wordSet value: " + str(wordSet))
         if wordSet:
-            self.updateStatusText(str("Word to find set:" + word))
-            print("word set")
+            self.updateStatusText(str("Word set: " + word))
+            print("Word set:" + word)
 
     def handleFind(self):
         self.updateStatusText("\nGrabbed word: " + word + ".")
@@ -138,11 +138,8 @@ class MainWindow(QWidget):
         self.textArea.mergeCurrentCharFormat(format)
 
     def updateStatusText(self, message):
-        self.status.insertPlainText(message)
+        self.status.insertPlainText("\n" + message)
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
-
-    def returnWord():
-        self.updateStatusText(word)
 
 
 class WordOptions(QWidget):
