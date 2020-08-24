@@ -134,12 +134,14 @@ class MainWindow(QWidget):
         self.textArea.mergeCurrentCharFormat(format)
 
     def confirmClose(self):
-        self.updateStatusText("Word set: " + word)
+        MainWindow().updateStatusText("Word set: " + word)
         print("wordSet value: " + str(wordSet))
 
     def updateStatusText(self, message):
+        print("updateStatusText called")
         self.status.insertPlainText("\n" + message)
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
+        print("updateStatusText DONE")
 
 
 class WordOptions(QWidget):
@@ -164,12 +166,8 @@ class WordOptions(QWidget):
     def confirmWord(self):
         global word
         word = "yes"
-        print("wordSet to True")
-        global wordSet
-        wordSet = True
         self.close()
-        self.mainxDLMAO = MainWindow()
-        self.mainxDLMAO.confirmClose()
+        MainWindow().confirmClose()
 
 
 if __name__ == "__main__":
