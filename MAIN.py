@@ -45,7 +45,7 @@ class MainWindow(QWidget):
         self.openBtn = QPushButton("Open")
         self.setupBtn = QPushButton("Setup")
         self.findBtn = QPushButton("Find")
-        self.findBtn.setEnabled(0)
+        #self.findBtn.setEnabled(0)
 
         self.btnLayout.addWidget(self.openBtn)
         self.btnLayout.addWidget(self.setupBtn)
@@ -111,13 +111,9 @@ class MainWindow(QWidget):
     def WordOptionsShow(self):
         self.WSetup = WordOptions()
         self.WSetup.show()
-        print("wordSet value: " + str(wordSet))
-        if wordSet:
-            self.updateStatusText(str("Word set: " + word))
-            print("Word set:" + word)
 
     def handleFind(self):
-        self.updateStatusText("\nGrabbed word: " + word + ".")
+        self.updateStatusText("Grabbed word: " + word)
         #text = Wordfinding.WordOptions()
         if not word:
             return
@@ -136,6 +132,10 @@ class MainWindow(QWidget):
             cursor.select(QTextCursor.WordUnderCursor)
         cursor.mergeCharFormat(format)
         self.textArea.mergeCurrentCharFormat(format)
+
+    def confirmClose(self):
+        self.updateStatusText("Word set: " + word)
+        print("wordSet value: " + str(wordSet))
 
     def updateStatusText(self, message):
         self.status.insertPlainText("\n" + message)
@@ -168,6 +168,8 @@ class WordOptions(QWidget):
         global wordSet
         wordSet = True
         self.close()
+        self.mainxDLMAO = MainWindow()
+        self.mainxDLMAO.confirmClose()
 
 
 if __name__ == "__main__":
