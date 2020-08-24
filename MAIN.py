@@ -12,10 +12,6 @@ from PyQt5.QtWidgets import (
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
-
-        global wordSet
-        wordSet = False
-
         self.layout = QHBoxLayout()
         self.textArea = QTextEdit(str(99**9**3) + " yes " + str(99**5**4))
         self.textFieldCSS = (
@@ -134,12 +130,12 @@ class MainWindow(QWidget):
         self.textArea.mergeCurrentCharFormat(format)
 
     def confirmClose(self):
-        MainWindow().updateStatusText("Word set: " + word)
-        print("wordSet value: " + str(wordSet))
+        self.updateStatusText("Word set: " + word)
 
     def updateStatusText(self, message):
         print("updateStatusText called")
         self.status.insertPlainText("\n" + message)
+        self.status.insertPlainText("it is what it is")
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
         print("updateStatusText DONE")
 
