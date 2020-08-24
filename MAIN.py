@@ -8,11 +8,16 @@ from PyQt5.QtWidgets import (
     QTextEdit, QLabel
 )
 
+
 class MainWindow(QWidget):
     def __init__(self):
         super(MainWindow, self).__init__()
+
+        global wordSet
+        wordSet = False
+
         self.layout = QHBoxLayout()
-        self.textArea = QTextEdit(str(99**9**3) + " yes")
+        self.textArea = QTextEdit(str(99**9**3) + " yes " + str(99**5**4))
         self.textFieldCSS = (
             "QScrollBar::handle {border-radius:4px;background-color:#555555;width:8px;}" + 
             "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
@@ -83,6 +88,7 @@ class MainWindow(QWidget):
         self.setStyleSheet(self.btnStyle)
         self.setLayout(self.mainLayout)
         self.resize(695, 385)
+        self.setMinimumSize(695, 385)
         self.center()
         self.widgetMargin = 6
         self.btnLayout.setContentsMargins(self.widgetMargin,0,0,0)
@@ -105,6 +111,10 @@ class MainWindow(QWidget):
     def WordOptionsShow(self):
         self.WSetup = WordOptions()
         self.WSetup.show()
+        print("wordSet value: " + str(wordSet))
+        if wordSet:
+            self.updateStatusText(str("Word to find set:" + word))
+            print("word set")
 
     def handleFind(self):
         self.updateStatusText("\nGrabbed word: " + word + ".")
@@ -112,9 +122,8 @@ class MainWindow(QWidget):
         if not word:
             return
         fmt = QTextCharFormat()
-        fmt.setForeground(Qt.red)
-        print("\nfmt.setForeground(Qt.red)", Qt.red)
-        fmt.setFontPointSize(14)     
+        fmt.setForeground(Qt.yellow)
+        print("\nfmt.setForeground(Qt.red)", Qt.yellow)    
 
         self.textArea.moveCursor(QTextCursor.Start)
 
@@ -132,6 +141,9 @@ class MainWindow(QWidget):
         self.status.insertPlainText(message)
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
 
+    def returnWord():
+        self.updateStatusText(word)
+
 
 class WordOptions(QWidget):
     def __init__(self):
@@ -147,7 +159,7 @@ class WordOptions(QWidget):
 
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirmWord)
-        self.confirmBtn.setStyleSheet(self.btnStyle)
+        #self.confirmBtn.setStyleSheet(self.btnStyle)
         self.layout.addWidget(self.confirmBtn)
 
         self.setLayout(self.layout)
@@ -155,7 +167,9 @@ class WordOptions(QWidget):
     def confirmWord(self):
         global word
         word = "yes"
-        print("Word to find confirmed" + ": " + word)
+        print("wordSet to True")
+        global wordSet
+        wordSet = True
         self.close()
 
 
