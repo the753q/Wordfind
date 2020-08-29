@@ -105,7 +105,7 @@ class MainWindow(QWidget):
         self.move(qr.topLeft())
 
     def WordOptionsShow(self):
-        self.WSetup = WordOptions()
+        self.WSetup = WordOptions(self)
         self.WSetup.show()
 
     def handleFind(self):
@@ -135,14 +135,14 @@ class MainWindow(QWidget):
     def updateStatusText(self, message):
         print("updateStatusText called")
         self.status.insertPlainText("\n" + message)
-        self.status.insertPlainText("it is what it is")
+        self.status.insertPlainText("\nit is what it is")
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
         print("updateStatusText DONE")
 
 
 class WordOptions(QWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, mainWindow = None):
+        super(WordOptions, self).__init__()
         self.layout = QVBoxLayout()
         self.label = QLabel("Another Window")
         self.layout.addWidget(self.label)
@@ -159,11 +159,13 @@ class WordOptions(QWidget):
 
         self.setLayout(self.layout)
 
+        self.mainWindow = mainWindow
+
     def confirmWord(self):
         global word
         word = "yes"
+        self.mainWindow.confirmClose()
         self.close()
-        MainWindow().confirmClose()
 
 
 if __name__ == "__main__":
