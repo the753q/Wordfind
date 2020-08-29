@@ -1,11 +1,10 @@
 import sys
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtGui import QFont, QTextCharFormat, QTextCursor, QTextDocument, QCursor
+from PyQt5.QtGui import QFont, QTextCharFormat, QColor, QTextCursor, QTextDocument, QCursor
 from PyQt5.QtCore import Qt, QPoint, QObject
 from PyQt5.QtWidgets import (
     QApplication, QFrame, QDesktopWidget, QWidget,
-    QPushButton, QHBoxLayout, QVBoxLayout,
-    QTextEdit, QLabel
+    QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit
 )
 
 
@@ -15,8 +14,8 @@ class MainWindow(QWidget):
         self.layout = QHBoxLayout()
         self.textArea = QTextEdit(str(99**9**3) + " yes " + str(99**5**4))
         self.textFieldCSS = (
-            "QScrollBar::handle {border-radius:4px;background-color:#555555;width:8px;}" + 
-            "QScrollBar::handle:hover {background-color:#bdbdbd;}" + 
+            "QScrollBar::handle {border-radius:4px;background-color:#444;width:8px;}" + 
+            "QScrollBar::handle:hover {background-color:#bbb;}" + 
             "QScrollBar::handle:pressed {background-color:white;}" + 
             "QScrollBar::add-page {background-color:rgba(0,0,0,0);}" + 
             "QScrollBar::sub-page {background-color:rgba(0,0,0,0);}" + 
@@ -27,8 +26,8 @@ class MainWindow(QWidget):
             "QTextEdit {color:#999;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         self.btnStyle = (
-            "QPushButton {margin-bottom:8px;min-height:52px;max-width:160px;color:#4fc3f7;background-color:#424242;border:3px solid #4fc3f7;border-radius:16px;font-size:35px;font-weight:bold;}" + 
-            "QPushButton:hover {color:#212121;background-color:#4fc3f7;}" + 
+            "QPushButton {margin-top:4px;margin-bottom:4px;min-height:52px;max-width:160px;color:#1de9b6;background-color:#484848;border:3px solid #1de9b6;border-radius:16px;font-size:35px;font-weight:bold;}" + 
+            "QPushButton:hover {color:#212121;background-color:#1de9b6;}" + 
             "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
         )
         self.layout.addWidget(self.textArea)
@@ -41,22 +40,29 @@ class MainWindow(QWidget):
         self.openBtn = QPushButton("Open")
         self.setupBtn = QPushButton("Setup")
         self.findBtn = QPushButton("Find")
-        #self.findBtn.setEnabled(0)
+
+        self.openBtn.setStyleSheet("QPushButton {margin-top:0;}")
+
+        self.btnToggle(False, self.findBtn)
 
         self.btnLayout.addWidget(self.openBtn)
         self.btnLayout.addWidget(self.setupBtn)
         self.btnLayout.addWidget(self.findBtn)
 
-        self.setupBtn.clicked.connect(self.WordOptionsShow)
-        self.findBtn.clicked.connect(self.handleFind)
+        self.openBtn.setCursor(Qt.PointingHandCursor)
+        self.setupBtn.setCursor(Qt.PointingHandCursor)
+        self.findBtn.setCursor(Qt.PointingHandCursor)
+
+        self.setupBtn.clicked.connect(self.wordOptionsShow)
+        self.findBtn.clicked.connect(self.findWord)
         
         self.status = QTextEdit()
-        self.status.insertPlainText("Successfully loaded." + "\nOpen a file...")
+        self.status.insertPlainText("Open a file or paste text...")
         self.status.setReadOnly(1)
         self.status.setTextInteractionFlags(Qt.NoTextInteraction)
         self.status.setStyleSheet(
             self.textFieldCSS +
-            "QTextEdit {color:#bdbdbd;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
+            "QTextEdit {margin-top:4px;color:#bdbdbd;font-size:14px;font-weight:bold;max-width:160px;max-height:100px;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}"
         )
         self.status.viewport().setCursor(Qt.ArrowCursor)
 
@@ -66,7 +72,7 @@ class MainWindow(QWidget):
         self.statusBtnLayout = QHBoxLayout()
         self.prevBtn = QPushButton("Previous")
         self.nextBtn = QPushButton("Next")
-        self.cntrlBtnDesign = ("QPushButton {margin-bottom:0;min-height:26px;color:#757575;font-size:14px;background-color:#212121;border:3px solid #181818;border-top:3px solid gray;border-radius: 4px 10px 4px 4px;border-radius:0;border-bottom-left-radius:16px;border-bottom-right-radius:16px;}")
+        self.cntrlBtnDesign = ("QPushButton {margin:0;min-height:26px;color:#757575;font-size:14px;background-color:#212121;border:3px solid #181818;border-top:3px solid gray;border-radius: 4px 10px 4px 4px;border-radius:0;border-bottom-left-radius:16px;border-bottom-right-radius:16px;}")
         self.prevBtn.setStyleSheet(self.cntrlBtnDesign + "QPushButton:hover {color:white;background-color:black;}" + "QPushButton:pressed {color:black;background-color:white;}" + "QPushButton {border-bottom-right-radius:0;border-right:1px solid gray;}")
         self.nextBtn.setStyleSheet(self.cntrlBtnDesign + "QPushButton:hover {color:white;background-color:black;}" + "QPushButton:pressed {color:black;background-color:white;}" + "QPushButton {color:#f5f5f5;border-bottom-left-radius:0;border-left:2px solid gray;}")
         self.statusBtnLayout.addWidget(self.prevBtn)
@@ -104,22 +110,18 @@ class MainWindow(QWidget):
         # top left of rectangle becomes top left of window centering it
         self.move(qr.topLeft())
 
-    def WordOptionsShow(self):
+    def wordOptionsShow(self):
         self.WSetup = WordOptions(self)
         self.WSetup.show()
 
-    def handleFind(self):
-        self.updateStatusText("Grabbed word: " + word)
-        #text = Wordfinding.WordOptions()
-        if not word:
-            return
+    def findWord(self):
+        self.updateStatusText("Found " + "6" + " words.")
         fmt = QTextCharFormat()
-        fmt.setForeground(Qt.yellow)
-        print("\nfmt.setForeground(Qt.red)", Qt.yellow)    
+        fmt.setForeground(QColor("#e9a81d")) 
 
         self.textArea.moveCursor(QTextCursor.Start)
 
-        while self.textArea.find(word, QTextDocument.FindWholeWords):
+        while self.textArea.find("yes", QTextDocument.FindWholeWords):
             self.mergeFormatOnWordOrSelection(fmt)
 
     def mergeFormatOnWordOrSelection(self, format):
@@ -129,42 +131,43 @@ class MainWindow(QWidget):
         cursor.mergeCharFormat(format)
         self.textArea.mergeCurrentCharFormat(format)
 
-    def confirmClose(self):
-        self.updateStatusText("Word set: " + word)
+    def confirmClose(self, wordSet):
+        self.updateStatusText("Word set: " + wordSet)
+        self.btnToggle(True, self.findBtn)
 
     def updateStatusText(self, message):
-        print("updateStatusText called")
         self.status.insertPlainText("\n" + message)
-        self.status.insertPlainText("\nit is what it is")
         self.status.verticalScrollBar().setValue(self.status.verticalScrollBar().maximum())
-        print("updateStatusText DONE")
+
+    def btnToggle(self, status, button):
+        button.setEnabled(status)
+        if status:
+            button.setStyleSheet(self.btnStyle)
+        else:
+            button.setStyleSheet("QPushButton {color:#555555;border-color:#555555;background-color:#383838}")
 
 
 class WordOptions(QWidget):
     def __init__(self, mainWindow = None):
         super(WordOptions, self).__init__()
+        self.mainWindow = mainWindow
         self.layout = QVBoxLayout()
-        self.label = QLabel("Another Window")
-        self.layout.addWidget(self.label)
     
         #self.setGeometry(150, 150, 595, 285)
         self.setFixedSize(595,285)
         self.setWindowTitle("Wordfind - Setup Word Finding")
         self.setWindowModality(QtCore.Qt.ApplicationModal)
 
+        self.optionsBtnStyle = ("QPushButton {color:red}")
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirmWord)
-        #self.confirmBtn.setStyleSheet(self.btnStyle)
+        self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
         self.layout.addWidget(self.confirmBtn)
 
         self.setLayout(self.layout)
 
-        self.mainWindow = mainWindow
-
     def confirmWord(self):
-        global word
-        word = "yes"
-        self.mainWindow.confirmClose()
+        self.mainWindow.confirmClose("yes")
         self.close()
 
 
@@ -172,7 +175,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon("icon.png"))
     app.setStyleSheet(
-        "QWidget {background-color:#424242;}" +
+        "QWidget {background-color:#333;}" +
         "QTextEdit {border: 3px solid #181818;}"
     )
     app.setFont(QFont("Trebuchet MS"))
