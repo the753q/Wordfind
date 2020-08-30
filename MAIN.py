@@ -23,7 +23,7 @@ class MainWindow(QWidget):
             "QScrollBar::add-line {height:0;}" +
             "QScrollBar {margin:8px 0 8px 0;width:8px;background-color:red;}" + 
             "QWidget {background-color:rgba(0,0,0,0);}" +
-            "QTextEdit {color:#999;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
+            "QTextEdit {color:#aaa;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         self.btnStyle = (
             "QPushButton {margin-top:4px;margin-bottom:4px;min-height:52px;max-width:160px;color:#1de9b6;background-color:#484848;border:3px solid #1de9b6;border-radius:16px;font-size:35px;font-weight:bold;}" + 
@@ -151,20 +151,29 @@ class WordOptions(QWidget):
     def __init__(self, mainWindow = None):
         super(WordOptions, self).__init__()
         self.mainWindow = mainWindow
-        self.layout = QVBoxLayout()
+        self.layoutMain = QVBoxLayout()
+        self.layoutWords = QVBoxLayout()
+        self.darkButtonBg = QFrame(self)
+        self.darkButtonBg.setStyleSheet("QFrame {background-color:#212121;min-width:645px;min-height:90px;border-top:2px solid black;}")
+        self.layoutButtons = QHBoxLayout(self.darkButtonBg)
     
         #self.setGeometry(150, 150, 595, 285)
-        self.setFixedSize(595,285)
+        self.setFixedSize(645,335)
         self.setWindowTitle("Wordfind - Setup Word Finding")
         self.setWindowModality(QtCore.Qt.ApplicationModal)
 
-        self.optionsBtnStyle = ("QPushButton {color:red}")
+        self.optionsBtnStyle = (
+            "QPushButton {color:white;border:3px solid white;border-radius:8px;}" + 
+            "QPushButton:hover {color:black;border-color:black;}"
+        )
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirmWord)
         self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
-        self.layout.addWidget(self.confirmBtn)
+        self.layoutButtons.addWidget(self.confirmBtn)
 
-        self.setLayout(self.layout)
+        self.layoutMain.addLayout(self.layoutWords)
+        self.layoutMain.addLayout(self.layoutButtons)
+        self.setLayout(self.layoutMain)
 
     def confirmWord(self):
         self.mainWindow.confirmClose("yes")
