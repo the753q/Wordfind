@@ -153,10 +153,10 @@ class WordOptions(QWidget):
         self.mainWindow = mainWindow
         self.layoutMain = QVBoxLayout()
         self.layoutWords = QVBoxLayout()
-        self.darkButtonBg = QFrame(self)
-        self.darkButtonBg.setStyleSheet("QFrame {background-color:#212121;min-width:645px;min-height:90px;border-top:2px solid black;}")
-        self.layoutButtons = QHBoxLayout(self.darkButtonBg)
-    
+        self.wordsBg = QFrame(self)
+        self.wordsBg.setStyleSheet("QFrame {background-color:#333;min-width:645px;min-height:90px;border-bottom:2px solid yellow;}")
+        self.layoutButtons = QHBoxLayout(self.wordsBg)
+
         #self.setGeometry(150, 150, 595, 285)
         self.setFixedSize(645,335)
         self.setWindowTitle("Wordfind - Setup Word Finding")
@@ -174,6 +174,7 @@ class WordOptions(QWidget):
         self.layoutMain.addLayout(self.layoutWords)
         self.layoutMain.addLayout(self.layoutButtons)
         self.setLayout(self.layoutMain)
+        self.setStyleSheet("background-color:#212121;")
 
     def confirmWord(self):
         self.mainWindow.confirmClose("yes")
