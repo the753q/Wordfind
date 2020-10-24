@@ -151,16 +151,16 @@ class WordOptions(QWidget):
     def __init__(self, mainWindow = None):
         super(WordOptions, self).__init__()
         self.mainWindow = mainWindow
+        #self.setGeometry(150, 150, 595, 285)
+        self.setFixedSize(645,335)
+        self.setWindowTitle("Wordfind - Setup Word Finding")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+
         self.layoutMain = QVBoxLayout()
         self.layoutWords = QVBoxLayout()
         self.wordsBg = QFrame(self)
         self.wordsBg.setStyleSheet("QFrame {background-color:#333;min-width:645px;min-height:90px;border-bottom:2px solid yellow;}")
         self.layoutButtons = QHBoxLayout(self.wordsBg)
-
-        #self.setGeometry(150, 150, 595, 285)
-        self.setFixedSize(645,335)
-        self.setWindowTitle("Wordfind - Setup Word Finding")
-        self.setWindowModality(QtCore.Qt.ApplicationModal)
 
         self.optionsBtnStyle = (
             "QPushButton {color:#e9a81d;background-color:#484848;border:3px solid #e9a81d;border-radius:16px;font-size:35px;font-weight:bold;min-width:160px;min-height:52px;}" + 
@@ -173,10 +173,17 @@ class WordOptions(QWidget):
         self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
         self.layoutButtons.addWidget(self.confirmBtn, alignment=QtCore.Qt.AlignRight)
 
+        self.layoutLetters1 = QHBoxLayout()
+        self.frameLetter = QFrame(self)
+        self.frameLetter.setStyleSheet("QFrame {color:white;background-color:red;border: 3px solid orange;}")
+        self.layoutLetter = QVBoxLayout(self.frameLetter)
+        self.layoutLetters1.addWidget(self.frameLetter)
+        self.layoutWords.addLayout(self.layoutLetters1)
+
         self.layoutMain.addLayout(self.layoutWords)
         self.layoutMain.addLayout(self.layoutButtons)
         self.setLayout(self.layoutMain)
-        self.setStyleSheet("background-color:#212121;")
+        self.setStyleSheet("{background-color:#212121;}")
 
     def confirmWord(self):
         self.mainWindow.confirmClose("yes")
