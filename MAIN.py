@@ -26,7 +26,7 @@ class MainWindow(QWidget):
             "QTextEdit {color:#aaa;background-color:#212121;border-radius:16px;padding:2px;font-size:18px;max-width:700px;}"
         )
         self.btnStyle = (
-            "QPushButton {margin-top:4px;margin-bottom:4px;min-height:52px;max-width:160px;color:#1de9b6;background-color:#484848;border:3px solid #1de9b6;border-radius:16px;font-size:35px;font-weight:bold;}" + 
+            "QPushButton {color:#1de9b6;background-color:#484848;margin-top:4px;margin-bottom:4px;min-height:52px;max-width:160px;border:3px solid #1de9b6;border-radius:16px;font-size:35px;font-weight:bold;}" + 
             "QPushButton:hover {color:#212121;background-color:#1de9b6;}" + 
             "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
         )
@@ -163,13 +163,15 @@ class WordOptions(QWidget):
         self.setWindowModality(QtCore.Qt.ApplicationModal)
 
         self.optionsBtnStyle = (
-            "QPushButton {color:white;border:3px solid white;border-radius:8px;}" + 
-            "QPushButton:hover {color:black;border-color:black;}"
+            "QPushButton {color:#e9a81d;background-color:#484848;border:3px solid #e9a81d;border-radius:16px;font-size:35px;font-weight:bold;min-width:160px;min-height:52px;}" + 
+            "QPushButton:hover {color:black;background-color:#e9a81d;}" +
+            "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
         )
+
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirmWord)
         self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
-        self.layoutButtons.addWidget(self.confirmBtn)
+        self.layoutButtons.addWidget(self.confirmBtn, alignment=QtCore.Qt.AlignRight)
 
         self.layoutMain.addLayout(self.layoutWords)
         self.layoutMain.addLayout(self.layoutButtons)
