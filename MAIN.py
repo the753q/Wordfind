@@ -162,15 +162,13 @@ class WordOptions(QWidget):
         self.wordsBg.setStyleSheet("QFrame {background-color:#333;min-width:645px;min-height:90px;border-bottom:2px solid yellow;}")
         self.layoutButtons = QHBoxLayout(self.wordsBg)
 
-        self.optionsBtnStyle = (
+        self.confirmBtn = QPushButton("Confirm")
+        self.confirmBtn.clicked.connect(self.confirmWord)
+        self.confirmBtn.setStyleSheet(
             "QPushButton {color:#e9a81d;background-color:#484848;border:3px solid #e9a81d;border-radius:16px;font-size:35px;font-weight:bold;min-width:160px;min-height:52px;}" + 
             "QPushButton:hover {color:black;background-color:#e9a81d;}" +
             "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
         )
-
-        self.confirmBtn = QPushButton("Confirm")
-        self.confirmBtn.clicked.connect(self.confirmWord)
-        self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
         self.layoutButtons.addWidget(self.confirmBtn, alignment=QtCore.Qt.AlignRight)
         #self.layoutLetters1 = QHBoxLayout()
         #self.frameLetter = QFrame(self)
