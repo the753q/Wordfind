@@ -172,18 +172,17 @@ class WordOptions(QWidget):
         self.confirmBtn.clicked.connect(self.confirmWord)
         self.confirmBtn.setStyleSheet(self.optionsBtnStyle)
         self.layoutButtons.addWidget(self.confirmBtn, alignment=QtCore.Qt.AlignRight)
+        #self.layoutLetters1 = QHBoxLayout()
+        #self.frameLetter = QFrame(self)
+        #self.frameLetter.setStyleSheet("QFrame {min-height:150px;background-color:red;border: 3px solid green;border-radius:8px;}")
+        #self.layoutLetter = QVBoxLayout()#self.frameLetter)
+        #self.layoutLetters1.addLayout(self.layoutLetter)
+        #self.layoutWords.addLayout(self.layoutLetters1)
 
-        self.layoutLetters1 = QHBoxLayout()
-        self.frameLetter = QFrame(self)
-        self.frameLetter.setStyleSheet("QFrame {color:white;background-color:red;border: 3px solid orange;}")
-        self.layoutLetter = QVBoxLayout(self.frameLetter)
-        self.layoutLetters1.addWidget(self.frameLetter)
-        self.layoutWords.addLayout(self.layoutLetters1)
-
-        self.layoutMain.addLayout(self.layoutWords)
-        self.layoutMain.addLayout(self.layoutButtons)
-        self.setLayout(self.layoutMain)
-        self.setStyleSheet("{background-color:#212121;}")
+        #self.layoutMain.addLayout(self.layoutWords)
+        #self.layoutMain.addLayout(self.layoutButtons)
+        #self.setLayout(self.layoutMain)
+        #self.setStyleSheet("{background-color:#212121;}")
 
     def confirmWord(self):
         self.mainWindow.confirmClose("yes")
