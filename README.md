@@ -4,4 +4,4 @@
 \
 early screenshot
 \
-![Wordfind Screenshot]()
+![Wordfind Screenshot](https://github.com/the753q/Wordfind/blob/master/GitHub/wordfind.png)
