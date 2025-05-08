@@ -3,12 +3,6 @@ from PySide6.QtWidgets import QPushButton
 from constants import styles
 
 
-def toggle_find_button(button: QPushButton, status: bool):
-    button.setEnabled(status)
-    style = styles.BUTTON if status else styles.BUTTON_DISABLED
-    button.setStyleSheet(style)
-
-
 def toggle_previous_button(button: QPushButton, status: bool):
     button.setEnabled(status)
     style = styles.PREVIOUS_BUTTON if status else styles.PREVIOUS_BUTTON_DISABLED

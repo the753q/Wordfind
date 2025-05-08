@@ -1,45 +1,66 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame, QWidget, QPushButton, QHBoxLayout, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QPushButton, QHBoxLayout, QTextEdit, QLineEdit, QVBoxLayout
+from constants import styles
 
 
 class WordOptions(QWidget):
-    def __init__(self, mainWindow=None):
+    def __init__(self, main_window=None):
         super().__init__()
-        self.mainWindow = mainWindow
+        self.main_window = main_window
+
+        self.word_area = QLineEdit("y_s")
+        self.word_area.setStyleSheet(styles.WORD_AREA)
+        self.word_area.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.word_area.textChanged.connect(self._on_word_area_text_changed)
+
+        find_button = QPushButton("Find")
+        find_button.setCursor(Qt.CursorShape.PointingHandCursor)
+        find_button.clicked.connect(self._confirm_word)
+
+        main_layout = QVBoxLayout()
+        main_layout.addStretch()
+        main_layout.addWidget(self.word_area)
+        main_layout.addStretch()
+        main_layout.addWidget(find_button, alignment=Qt.AlignmentFlag.AlignRight)
+
+        self.setLayout(main_layout)
+        self.setStyleSheet(styles.FIND_BUTTON)
+        self.setContentsMargins(styles.WIDGET_MARGIN, styles.WIDGET_MARGIN, styles.WIDGET_MARGIN, styles.WIDGET_MARGIN)
         self.setFixedSize(645, 335)
-        self.setWindowTitle("WordFind - Setup Word Finding")
+        self.setWindowTitle("Setup Word to Find")
         self.setWindowModality(Qt.WindowModality.ApplicationModal)
 
-        self.layoutMain = QVBoxLayout()
-        self.layoutWords = QVBoxLayout()
-        self.wordsBg = QFrame(self)
-        self.wordsBg.setStyleSheet(
-            "QFrame {background-color:#333;min-width:645px;min-height:90px;border-bottom:2px solid yellow;}")
-        self.layoutButtons = QHBoxLayout(self.wordsBg)
+    def _on_word_area_text_changed(self):
+        current_text = self.word_area.text()
 
-        self.confirmBtn = QPushButton("Confirm")
-        self.confirmBtn.clicked.connect(self._confirm_word)
-        self.confirmBtn.setStyleSheet(
-            "QPushButton {color:#e9a81d;background-color:#484848;border:3px solid #e9a81d;border-radius:16px;font-size:35px;font-weight:bold;min-width:160px;min-height:52px;}" +
-            "QPushButton:hover {color:black;background-color:#e9a81d;}" +
-            "QPushButton:pressed {color:white;background-color:#212121;border-color:white;}"
-        )
-        self.layoutButtons.addWidget(self.confirmBtn, alignment=Qt.AlignmentFlag.AlignRight)
+        new_text_parts = []
+        made_change = False
+        for char in current_text:
+            if char.isspace():
+                new_text_parts.append("_")
+                made_change = True
+            elif char.isalnum():
+                upper_char = char.upper()
+                new_text_parts.append(upper_char)
+                if char != upper_char: made_change = True
+            else:
+                made_change = True
 
-        # self.layoutLetters1 = QHBoxLayout()
-        # self.frameLetter = QFrame(self)
-        # self.frameLetter.setStyleSheet("QFrame {min-height:150px;background-color:red;border: 3px solid green;border-radius:8px;}")
-        # self.layoutLetter = QVBoxLayout()#self.frameLetter)
-        # self.layoutLetters1.addLayout(self.layoutLetter)
-        # self.layoutWords.addLayout(self.layoutLetters1)
+        new_text = "".join(new_text_parts)
 
-        # self.layoutMain.addLayout(self.layoutWords)
-        # self.layoutMain.addLayout(self.layoutButtons)
+        if new_text != current_text or made_change:
+            self.word_area.blockSignals(True)
+            self.word_area.setText(new_text)
+            self.word_area.blockSignals(False)
 
-        self.layoutMain.addWidget(self.wordsBg)
-        self.setLayout(self.layoutMain)
-        # self.setStyleSheet("{background-color:#212121;}")
+    def keyPressEvent(self, event):
+        if self.word_area.hasFocus() and \
+                (event.key() == Qt.Key.Key_Return or event.key() == Qt.Key.Key_Enter):
+            self._confirm_word()
+            event.accept()
+            return
+        super().keyPressEvent(event)
 
     def _confirm_word(self):
-        self.mainWindow.confirm_close("yes")
         self.close()
+        self.main_window.confirm_close(self.word_area.text())

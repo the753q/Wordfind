@@ -1,3 +1,4 @@
+import re
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QTextCharFormat, QColor, QTextCursor
 from PySide6.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QTextEdit
@@ -9,14 +10,8 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
         setup_button = QPushButton("Setup")
-        setup_button.setStyleSheet("QPushButton {margin-top:0;}")
         setup_button.setCursor(Qt.CursorShape.PointingHandCursor)
         setup_button.clicked.connect(self._show_options_window)
-
-        self.find_button = QPushButton("Find")
-        self.find_button.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.find_button.clicked.connect(self._find_word)
-        utilities.toggle_find_button(self.find_button, False)
 
         self.status = QTextEdit()
         self.status.insertPlainText("Paste text...")
@@ -54,7 +49,6 @@ class MainWindow(QWidget):
 
         button_layout = QVBoxLayout()
         button_layout.addWidget(setup_button)
-        button_layout.addWidget(self.find_button)
         button_layout.addStretch()
         button_layout.addWidget(control_panel)
         button_layout.setContentsMargins(styles.WIDGET_MARGIN, 0, 0, 0)
@@ -63,7 +57,9 @@ class MainWindow(QWidget):
         button_panel.setLayout(button_layout)
         button_panel.setMaximumHeight(styles.MINIMUM_SIZE.height())
 
-        self.text_area = QTextEdit(str(99 ** 9 ** 3) + " yes " + str(99 ** 5 ** 4) + "yes")
+        self.text_area = QTextEdit(str(99 ** 9 ** 3) + " yes " + str(99 ** 5 ** 4) + "yes" +
+                                   "Sample text for testing: yes, yos, y_s, y s, and not yz s."
+                           "y&s? Also YEs46  yess ")
         self.text_area.setStyleSheet(styles.TEXT_FIELD)
 
         main_layout = QHBoxLayout()
@@ -98,6 +94,7 @@ class MainWindow(QWidget):
 
     def _find_word(self):
         utilities.toggle_next_button(self.next_button, False)
+        utilities.toggle_previous_button(self.previous_button, False)
         self._clear_highlights()
         self.search_results = []
         self.current_match_index = -1
@@ -105,22 +102,39 @@ class MainWindow(QWidget):
         highlight_format = QTextCharFormat()
         highlight_format.setForeground(QColor("#e9a81d"))
 
+        escaped_search_term = re.escape(self.search_term)
+        pattern_str = escaped_search_term.replace("_", ".")
+        regex = re.compile(pattern_str)
+
+        text_content = self.text_area.toPlainText()
         num_found = 0
-        while self.text_area.find(self.search_term):
-            current_selection_cursor = self.text_area.textCursor()
-            self.search_results.append(current_selection_cursor.selectionStart())
-            current_selection_cursor.mergeCharFormat(highlight_format)
+        for match in regex.finditer(text_content):
+            start_pos = match.start()
+            self.search_results.append(start_pos)
             num_found += 1
+
+        temp_cursor = self.text_area.textCursor()
+        for start_pos in self.search_results:
+            temp_cursor.setPosition(start_pos)
+            temp_cursor.setPosition(start_pos + len(self.search_term), QTextCursor.MoveMode.KeepAnchor)
+            temp_cursor.mergeCharFormat(highlight_format)
 
         self._update_status_text(f"Found {num_found} instance(s) of '{self.search_term}'.")
 
-        if not self.search_results: return
+        if self.search_results:
+            final_cursor_pos = self.text_area.textCursor().selectionEnd()
+            temp_cursor.clearSelection()
+            temp_cursor.setPosition(final_cursor_pos)
+            self.text_area.setTextCursor(temp_cursor)
 
-        self.current_match_index = 0
-        self._go_to_match(self.current_match_index)
-        if len(self.search_results) > 1:
+            self.current_match_index = 0
+            self._go_to_match(self.current_match_index)
             utilities.toggle_next_button(self.next_button, True)
             utilities.toggle_previous_button(self.previous_button, True)
+        else:
+            self.text_area.moveCursor(QTextCursor.MoveOperation.Start)
+
+        self.text_area.ensureCursorVisible()
 
     def _go_to_match(self, index):
         start_pos = self.search_results[index]
@@ -153,5 +167,4 @@ class MainWindow(QWidget):
 
     def confirm_close(self, word_shell):
         self.search_term = word_shell
-        self._update_status_text("Word set: " + word_shell)
-        utilities.toggle_find_button(self.find_button, True)
+        self._find_word()
